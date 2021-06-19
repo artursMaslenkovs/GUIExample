@@ -1,5 +1,6 @@
+package Chat;
+
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,31 +12,36 @@ import java.nio.file.Paths;
 import java.util.Collections;
 
 public class Chat extends Component implements ActionListener {
+    private JFrame frame = new JFrame("Chat");
+
+    private JMenuBar menuBar = new JMenuBar();
+    private JMenu menuFile = new JMenu("File");
+    private JMenu menuHelp = new JMenu("Help");
+    private JMenuItem itemOpen = new JMenuItem("Open");
+    private JMenuItem itemSaveAs = new JMenuItem("Save as");
+
+    private JTextArea textArea = new JTextArea();
+
+    private JPanel panel = new JPanel();
+
+    private JLabel label = new JLabel("Enter Text");
+    private JTextField textField = new JTextField(10);
+
+    private JButton send = new JButton("Send");
+    private JButton reset = new JButton("Reset");
 
     public Chat() {
-        JFrame frame = new JFrame("Chat Frame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menuFile = new JMenu("File");
-        JMenu menuHelp = new JMenu("Help");
         menuBar.add(menuFile);
         menuBar.add(menuHelp);
-        JMenuItem optionOpen = new JMenuItem("Open");
-        JMenuItem optionSaveAs = new JMenuItem("Save as");
-        optionOpen.addActionListener(this);
-        optionSaveAs.addActionListener(this);
-        menuFile.add(optionOpen);
-        menuFile.add(optionSaveAs);
+        itemOpen.addActionListener(this);
+        itemSaveAs.addActionListener(this);
+        menuFile.add(itemOpen);
+        menuFile.add(itemSaveAs);
 
-        JTextArea textArea = new JTextArea();
 
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Enter Text");
-        JTextField textField = new JTextField(10);
-        JButton send = new JButton("Send");
-        JButton reset = new JButton("Reset");
         send.addActionListener(e -> textArea.append(textField.getText() + "\n"));
         reset.addActionListener(e -> textField.setText(""));
         panel.add(label);
@@ -52,14 +58,14 @@ public class Chat extends Component implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         final JFileChooser fileChooser = new JFileChooser();
-        if (event.getActionCommand() == "Open") {
+        if (event.getActionCommand().equals("Open")) {
             int returnVal = fileChooser.showOpenDialog(Chat.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 System.out.println(file.getName());
             }
-        } else if (event.getActionCommand() == "Save as") {
+        } else if (event.getActionCommand().equals("Save as")) {
             int returnVal = fileChooser.showOpenDialog(Chat.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
